@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QUrl>
 #include <QString>
+#include <QVector>
 class ArrayFromData : public QObject
 {
     Q_OBJECT
@@ -15,13 +16,13 @@ public:
     Q_INVOKABLE QString getTheData();
 
     Q_INVOKABLE QString getOutputData();
-    Q_INVOKABLE void saveArrayToFile(QString filepath);
+    Q_INVOKABLE void saveArrayToFile(QString filepath/*, const QString &fileType*/);
 
 private:
         QString inputData;
         QString outputData;
 
-//        QVector<double> unsortedTableValues;
+        QVector<double> unsortedTableValues;
         double sortedTable[35][10];
 
 

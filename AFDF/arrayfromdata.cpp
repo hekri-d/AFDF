@@ -7,6 +7,11 @@
 #include <QUrl>
 #include <QTextStream>
 
+#include <QtGui/QTextDocument>
+#include <QtGui/QTextCursor>
+#include <QtGui/QFontDatabase>
+#include <QtCore/QFileInfo>
+
 #include "qqmlfile.h"
 
 ArrayFromData::ArrayFromData(QObject *parent) : QObject(parent)
@@ -18,20 +23,18 @@ void ArrayFromData::getTheFile(QString filePath){
 
     /* =========================== CAN'T TOUCH THIS ============ */
 
-    QVector<double> unsortedTableValues;
-
     QString fileName = QQmlFile::urlToLocalFileOrQrc(filePath);
 
     QFile inputFile(fileName);
 
-                qDebug()<<"Emni i fileNamet eshte:  "<<fileName<<"filePath: "<<filePath;
+//                qDebug()<<"Emni i fileNamet eshte:  "<<fileName<<"filePath: "<<filePath;
 
 
     if(!(inputFile.open(QIODevice::ReadOnly))){
                 qDebug()<<"Didn't work: "<<inputFile.errorString();
     }
     else if (!inputFile.error()) {
-                qDebug()<<"It finally worked: "<<inputFile.errorString();
+//                qDebug()<<"It finally worked: "<<inputFile.errorString();
     }
 
 
@@ -47,9 +50,6 @@ void ArrayFromData::getTheFile(QString filePath){
 
 
 
-//    double sortedTable[35][10];
-
-
     int c =0;
 
     for (int i =0; i<10; i++){
@@ -62,51 +62,7 @@ void ArrayFromData::getTheFile(QString filePath){
     }
 
 
-    QFile outputFile("/home/ihaaaaa/Desktop/outFromQt.txt");
 
-    if(outputFile.open(QFile::WriteOnly | QFile::Truncate )){
-
-        QTextStream seeout(&outputFile);
-
-
-        int s = 0;
-
-        seeout<<"{";
-
-        for (int i =0; i<35; i++){
-
-            seeout<<"\t{ ";
-
-
-            for (int j=0; j<10; j++){
-
-                seeout<<sortedTable[i][j];
-
-
-                if(!(j == 9))
-                    seeout <<", ";
-
-
-                s = j;
-            }
-
-
-            seeout <<"}";
-
-            if(s==9 && i !=34){seeout<<","; }
-
-            else if(s==9 && i ==34){ seeout <<"\t};";  }
-            seeout << endl;
-
-        }
-
-
-//        outputData = outputString;
-
-
-    }
-
-//    QString inputDisplayString = "";
 
     for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
                         iteratori < unsortedTableValues.end();
@@ -115,15 +71,7 @@ void ArrayFromData::getTheFile(QString filePath){
     }
 
 
-//    inputData = inputDisplayString;
 
-
-
-
-
-
-    inputFile.close();
-    outputFile.close();
 }
 
 
@@ -135,61 +83,76 @@ QString ArrayFromData::getTheData(){
 
 
 QString ArrayFromData::getOutputData(){
+
+    QTextStream seeout(&outputData);
+
+
+    int s = 0;
+
+    seeout<<"{";
+
+    for (int i =0; i<35; i++){
+        seeout<<setw(6)<<"\t{ ";
+
+        for (int j=0; j<10; j++){
+            seeout<<sortedTable[i][j];
+
+            if(!(j == 9))
+                seeout <<", ";
+
+            s = j;
+        }
+
+        seeout <<"}";
+
+        if(s==9 && i !=34){seeout<<",";  }
+        else if(s==9 && i ==34){ seeout <<"\t};"; }
+
+        seeout << endl;
+
+    }
+
     return outputData;
 
 }
 
 
 
-void ArrayFromData::saveArrayToFile(QString filepath){
+void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*/){
 
-    QString fileName = QQmlFile::urlToLocalFileOrQrc(filepath);
+    QString localPath = QQmlFile::urlToLocalFileOrQrc(filepath);
+    QFile saveArrayFile(localPath);
+    if (!saveArrayFile.open(QFile::WriteOnly | QFile::Truncate)) {
+        qDebug()<<"Sum ting wong";
+        qDebug()<<saveArrayFile.errorString();
+        return;
+    }
 
-    QFile outputFile(fileName);
-
-//    QVector<double> unsortedTableValues;
-
-
-
-    if(outputFile.open(QFile::WriteOnly | QFile::Truncate )){
-
-        QTextStream seeout(&outputFile);
-
+        QTextStream seeout(&saveArrayFile);
 
         int s = 0;
 
         seeout<<"{";
 
         for (int i =0; i<35; i++){
-
             seeout<<"\t{ ";
 
-
             for (int j=0; j<10; j++){
-
                 seeout<<sortedTable[i][j];
-
 
                 if(!(j == 9))
                     seeout <<", ";
 
-
                 s = j;
             }
 
-
             seeout <<"}";
 
-
             if(s==9 && i !=34){seeout<<",";  }
-
             else if(s==9 && i ==34){ seeout <<"\t};"; }
             seeout << endl;
 
         }
-
-
-//        outputData = outputString;
-}
+qDebug()<<"Sum ting wong 12";
 
 }

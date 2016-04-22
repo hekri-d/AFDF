@@ -27,7 +27,7 @@ Window {
             id: fileDialog
             title: "Please choose a file"
             folder: shortcuts.home
-            selectExisting: true
+
             onAccepted: {
 
                 arrayFromData.getTheFile(fileDialog.fileUrls)
@@ -88,6 +88,8 @@ Window {
             anchors.rightMargin: 10
         }
 
+
+
         TextArea {
             id: output
             x: 564
@@ -100,6 +102,7 @@ Window {
             anchors.bottom: quit.top
             anchors.bottomMargin: 30
             readOnly: true
+            wrapMode: TextEdit.NoWrap
 //            horizontalScrollBarPolicy:
         }
 
@@ -117,20 +120,15 @@ Window {
         }
 
 
-
+//TODO: Remove this FileDialog and implement the same functionality in the first FileDialog
         FileDialog {
             id: saveFileDialog
-            title: "Choose a directory to save the file"
-            folder: shortcuts.desktop
-            selectExisting: true
-            selectFolder: true
+            selectExisting: false
+            selectFolder: false
 
-            onAccepted: {
+            onAccepted: arrayFromData.saveArrayToFile(saveFileDialog.fileUrls)
 
-                arrayFromData.getTheFile(fileDialog.fileUrls)
-            }
         }
-
 
         Button {
             id: saveArrayToFile
