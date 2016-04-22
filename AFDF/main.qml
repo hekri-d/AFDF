@@ -23,15 +23,11 @@ Window {
         }
 
 
-        Text {
-            text: qsTr("Hello World")
-            anchors.centerIn: parent
-        }
-
         FileDialog {
             id: fileDialog
             title: "Please choose a file"
             folder: shortcuts.home
+            selectExisting: true
             onAccepted: {
 
                 arrayFromData.getTheFile(fileDialog.fileUrls)
@@ -46,6 +42,8 @@ Window {
         }
 
 
+
+
     Item {
         id: mainItem
         anchors.fill: parent
@@ -53,7 +51,7 @@ Window {
         Button {
             id: load
             y: 97
-            text: qsTr("Load")
+            text: qsTr("Load File")
             anchors.left: inputData.left
             anchors.leftMargin: 0
             anchors.bottom: inputData.top
@@ -102,6 +100,7 @@ Window {
             anchors.bottom: quit.top
             anchors.bottomMargin: 30
             readOnly: true
+//            horizontalScrollBarPolicy:
         }
 
         Button {
@@ -117,15 +116,40 @@ Window {
             onClicked: Qt.quit()
         }
 
+
+
+        FileDialog {
+            id: saveFileDialog
+            title: "Choose a directory to save the file"
+            folder: shortcuts.desktop
+            selectExisting: true
+            selectFolder: true
+
+            onAccepted: {
+
+                arrayFromData.getTheFile(fileDialog.fileUrls)
+            }
+        }
+
+
         Button {
-            id: button3
+            id: saveArrayToFile
             x: 246
             y: 368
-            text: qsTr("Button")
+            text: qsTr("Save Array")
             anchors.right: quit.left
             anchors.rightMargin: 10
             anchors.verticalCenterOffset: 0
             anchors.verticalCenter: quit.verticalCenter
+
+            onClicked: {
+
+                selectExisting: false
+                selectFolder: false
+                saveFileDialog.open()
+            }
+
+
         }
 
         Button {
@@ -134,7 +158,7 @@ Window {
             y: 368
             text: qsTr("Generate")
             anchors.verticalCenter: quit.verticalCenter
-            anchors.right: button3.left
+            anchors.right: saveArrayToFile.left
             anchors.rightMargin: 10
 
             onClicked: {
@@ -156,7 +180,7 @@ Window {
         Button {
             id: saveEditsToOutput
             y: 97
-            text: qsTr("Save")
+            text: qsTr("Save Edits")
             anchors.left: edit.right
             anchors.leftMargin: 20
             anchors.verticalCenter: edit.verticalCenter
@@ -184,7 +208,7 @@ Window {
         }
 
         CheckBox {
-            id: replaceCommasWithDot
+            id: replaceCommasWithDots
             y: 37
             text: qsTr("Replace commas with dots")
             anchors.bottom: inputComboBox.top

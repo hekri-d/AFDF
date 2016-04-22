@@ -39,7 +39,6 @@ void ArrayFromData::getTheFile(QString filePath){
 
     QString inputString;
 
-    QString outputString;  //
 
     while (!(inputFile.atEnd())) {
         inputString = inputFile.readLine();
@@ -48,7 +47,7 @@ void ArrayFromData::getTheFile(QString filePath){
 
 
 
-    double sortedTable[35][10];
+//    double sortedTable[35][10];
 
 
     int c =0;
@@ -69,57 +68,54 @@ void ArrayFromData::getTheFile(QString filePath){
 
         QTextStream seeout(&outputFile);
 
-        QTextStream seout(&outputString); //
-
 
         int s = 0;
 
         seeout<<"{";
-        seout<<"{"; //
+
         for (int i =0; i<35; i++){
 
             seeout<<"\t{ ";
-              seout<<"\t{ "; //
+
 
             for (int j=0; j<10; j++){
 
                 seeout<<sortedTable[i][j];
-                 seout<<sortedTable[i][j]; //
+
 
                 if(!(j == 9))
                     seeout <<", ";
-                seout <<", "; //
+
 
                 s = j;
             }
 
 
             seeout <<"}";
-            seout <<"}"; //
 
-            if(s==9 && i !=34){seeout<<",";  seout<<",";/**/ }
+            if(s==9 && i !=34){seeout<<","; }
 
-            else if(s==9 && i ==34){ seeout <<"\t};"; seout <<"\t};"; /**/ }
+            else if(s==9 && i ==34){ seeout <<"\t};";  }
             seeout << endl;
-            seout << endl; //
+
         }
 
 
-        outputData = outputString;
+//        outputData = outputString;
 
 
     }
 
-    QString inputDisplayString = "";
+//    QString inputDisplayString = "";
 
     for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
                         iteratori < unsortedTableValues.end();
                                             iteratori++){
-        inputDisplayString +="\n"+ QString::number(*iteratori);
+        inputData +="\n"+ QString::number(*iteratori);
     }
 
 
-    inputData = inputDisplayString;
+//    inputData = inputDisplayString;
 
 
 
@@ -139,19 +135,61 @@ QString ArrayFromData::getTheData(){
 
 
 QString ArrayFromData::getOutputData(){
-//    QFile fajlli("/home/ihaaaaa/Desktop/outFromQt.txt");
-
-//    if(!(fajlli.open(QIODevice::ReadOnly))){
-//        qDebug()<<"sum ting wong"<<endl;
-//    }
-
-
-
-//    QString outputString;
-
-//    QTextStream seeout(&outputString);
-
-
     return outputData;
+
+}
+
+
+
+void ArrayFromData::saveArrayToFile(QString filepath){
+
+    QString fileName = QQmlFile::urlToLocalFileOrQrc(filepath);
+
+    QFile outputFile(fileName);
+
+//    QVector<double> unsortedTableValues;
+
+
+
+    if(outputFile.open(QFile::WriteOnly | QFile::Truncate )){
+
+        QTextStream seeout(&outputFile);
+
+
+        int s = 0;
+
+        seeout<<"{";
+
+        for (int i =0; i<35; i++){
+
+            seeout<<"\t{ ";
+
+
+            for (int j=0; j<10; j++){
+
+                seeout<<sortedTable[i][j];
+
+
+                if(!(j == 9))
+                    seeout <<", ";
+
+
+                s = j;
+            }
+
+
+            seeout <<"}";
+
+
+            if(s==9 && i !=34){seeout<<",";  }
+
+            else if(s==9 && i ==34){ seeout <<"\t};"; }
+            seeout << endl;
+
+        }
+
+
+//        outputData = outputString;
+}
 
 }

@@ -15,10 +15,17 @@ public:
     Q_INVOKABLE QString getTheData();
 
     Q_INVOKABLE QString getOutputData();
+    Q_INVOKABLE void saveArrayToFile(QString filepath);
 
 private:
         QString inputData;
         QString outputData;
+
+//        QVector<double> unsortedTableValues;
+        double sortedTable[35][10];
+
+
+
 
 
 signals:
