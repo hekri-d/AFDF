@@ -92,7 +92,7 @@ QString ArrayFromData::getOutputData(){
     seeout<<"{";
 
     for (int i =0; i<35; i++){
-        seeout<<setw(6)<<"\t{ ";
+        seeout<<"\t{ ";
 
         for (int j=0; j<10; j++){
             seeout<<sortedTable[i][j];

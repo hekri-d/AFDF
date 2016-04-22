@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>ArrayFromDataFileUI.qml</file>
-        <file>ArrayFromDataFileUIForm.ui.qml</file>
     </qresource>
 </RCC>
