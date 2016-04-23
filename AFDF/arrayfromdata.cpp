@@ -23,37 +23,45 @@ void ArrayFromData::getTheFile(QString filePath){
 
     /* =========================== CAN'T TOUCH THIS ============ */
 
+
+    dataSize = 0;
+
     QString fileName = QQmlFile::urlToLocalFileOrQrc(filePath);
 
     QFile inputFile(fileName);
 
-//                qDebug()<<"Emni i fileNamet eshte:  "<<fileName<<"filePath: "<<filePath;
+                qDebug()<<"Emni i fileNamet eshte:  "<<fileName<<"filePath: "<<filePath;
 
 
     if(!(inputFile.open(QIODevice::ReadOnly))){
                 qDebug()<<"Didn't work: "<<inputFile.errorString();
     }
     else if (!inputFile.error()) {
-//                qDebug()<<"It finally worked: "<<inputFile.errorString();
+                qDebug()<<"It finally worked: "<<inputFile.errorString();
     }
 
 
     /* =========================== CAN'T TOUCH THIS >><< END ============ */
 
     QString inputString;
+qDebug()<<"It finally worked: ";
 
-
-    while (!(inputFile.atEnd())) {
+    do {
+    qDebug()<<"It finally worked: ";
         inputString = inputFile.readLine();
         unsortedTableValues.push_back(inputString.toDouble());
-    }
+        dataSize++;
+        qDebug()<<"It finally worked: ";
+    }while (!(inputFile.atEnd()));
+
+qDebug()<<"It finally worked: ";
 
 
 
     int c =0;
 
-    for (int i =0; i<10; i++){
-        for (int j=0; j<35; j++){
+    for (int i =0; i<(columns); i++){qDebug()<<"worked: ";
+        for (int j=0; j<rows; j++){
 
             sortedTable[j][i] = unsortedTableValues[c];
             c++;
@@ -82,22 +90,23 @@ QString ArrayFromData::getTheData(){
 
 
 
-QString ArrayFromData::getOutputData(){
+QString ArrayFromData::createArray(/*int rows, int columns*/){
 
     QTextStream seeout(&outputData);
 
+    outputData = "";
 
     int s = 0;
 
     seeout<<"{";
 
-    for (int i =0; i<35; i++){
+    for (int i =0; i<rows; i++){
         seeout<<"\t{ ";
 
-        for (int j=0; j<10; j++){
+        for (int j=0; j<columns; j++){
             seeout<<sortedTable[i][j];
 
-            if(!(j == 9))
+            if(!(j == (columns-1) ))
                 seeout <<", ";
 
             s = j;
@@ -105,8 +114,8 @@ QString ArrayFromData::getOutputData(){
 
         seeout <<"}";
 
-        if(s==9 && i !=34){seeout<<",";  }
-        else if(s==9 && i ==34){ seeout <<"\t};"; }
+        if(s==(columns-1) && i !=(rows-1)){seeout<<",";  }
+        else if(s==(columns-1) && i ==(rows-1)){ seeout <<"\t};"; }
 
         seeout << endl;
 
@@ -134,13 +143,13 @@ void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*
 
         seeout<<"{";
 
-        for (int i =0; i<35; i++){
+        for (int i =0; i<rows; i++){
             seeout<<"\t{ ";
 
-            for (int j=0; j<10; j++){
+            for (int j=0; j<columns; j++){
                 seeout<<sortedTable[i][j];
 
-                if(!(j == 9))
+                if(!(j == (columns-1) ))
                     seeout <<", ";
 
                 s = j;
@@ -148,11 +157,58 @@ void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*
 
             seeout <<"}";
 
-            if(s==9 && i !=34){seeout<<",";  }
-            else if(s==9 && i ==34){ seeout <<"\t};"; }
+            if(s==(columns-1) && i !=(rows-1)){seeout<<",";  }
+            else if(s==(columns-1) && i ==(rows-1)){ seeout <<"\t};"; }
+
             seeout << endl;
 
         }
 qDebug()<<"Sum ting wong 12";
 
 }
+
+
+QString ArrayFromData::checkDimensions(int rows, int columns){
+
+    QString report = "?";
+
+    if(dataSize < rows * columns){
+        report = "The file you provided doesn't have enough data to create an array of the size " + QString::number(rows) + " by " + QString::number(columns);
+    }
+    else if(dataSize > rows * columns) {
+        report = "The file you provided has more data than are needed to create an array of the size "  + QString::number(rows) + " by " + QString::number(columns);
+    }
+    else if(dataSize = rows * columns){
+        report = "The file has the right amount of data.";
+    }
+
+    return report;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
