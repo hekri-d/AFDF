@@ -30,8 +30,9 @@ Window {
 
             onAccepted: {
 
+
                 arrayFromData.getTheFile(fileDialog.fileUrls)
-                inputData.text = arrayFromData.getTheData();
+                inputData.text = arrayFromData.getInputData();
 
             }
             onRejected: {
@@ -62,8 +63,9 @@ Window {
 
                 onClicked: {
                     inputData.text = ""
+
                     arrayFromData.getArrayDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
-                    arrayFromData.checkDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
+//                    arrayFromData.checkDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     fileDialog.open()
 
                 }
@@ -183,8 +185,10 @@ Window {
                 anchors.rightMargin: 10
 
                 onClicked: {
-                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex)
-                    note.text = arrayFromData.checkDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex);
+                    arrayFromData.rows = rowsComboBox.currentIndex;
+                    arrayFromData.columns = columnsComboBox.currentIndex;
+//                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex)
+//                    note.text = arrayFromData.checkDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex);
                     output.text = arrayFromData.createArray()
                 }
             }
