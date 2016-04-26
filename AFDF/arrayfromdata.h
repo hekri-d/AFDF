@@ -26,37 +26,38 @@ public:
 //    Q_INVOKABLE QString checkDimensions(int rows, int columns);
 
 
-    Q_INVOKABLE void getArrayDimensions(int rows, int columns){
+    int rows(){ return m_rows; }
+    int columns(){ return m_columns; }
 
-//        this->rows = rows;
-//        this->columns = columns;
+    void setRows(int rows){ m_rows = rows; }
+    void setColumns(int columns){ m_columns = columns; }
+
+    Q_INVOKABLE void prepareVector(int rows, int columns){
+        sortedTable.resize(rows);
+        for (int i = 0; i < rows; i++){
+            sortedTable[i].resize(columns);
+        }
     }
 
-
-    int rows(){
-        return m_rows;
-    }
-    int columns(){
-        return m_columns;
-    }
-
-    void setRows(int rows){
-        m_rows = rows;
-    }
-
-    void setColumns(int columns){
-        m_columns = columns;
-    }
 
 private:
         QString inputData = "";
         QString outputData = "";
 
         QVector<double> unsortedTableValues;
-        double sortedTable[35][10];
+
+        int m_rows ;
+        int m_columns ;
+
+//        QVector<QVector<int> > shemsi(m, QVector<int>(n,0));
+
+//        vector<vector<int> > matrix(M, vector<int>(N, K))
+
+        QVector<QVector<double> >sortedTable;  /*{m_rows, QVector<double>(m_columns,0)};*/    //The initialization with {} brackets is C++11 ONLY! Otherwise it's not possible to initialize the vector here.
+
+//        double sortedTable[m_rows][m_columns];
         double dataCount;
-        int m_rows = 0;
-        int m_columns = 0;
+
 
 
 
