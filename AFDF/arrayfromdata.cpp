@@ -206,22 +206,22 @@ qDebug()<<"Sum ting wong 12";
 
 
 
-QString ArrayFromData::checkDimensions(int rows, int columns){
+//QString ArrayFromData::checkDimensions(int rows, int columns){
 
-    QString report = "?";
+//    QString report = "?";
 
-    if(dataSize < rows * columns){
-        report = "The file you provided doesn't have enough data to create an array of the size " + QString::number(rows) + " by " + QString::number(columns);
-    }
-    else if(dataSize > rows * columns) {
-        report = "The file you provided has more data than are needed to create an array of the size "  + QString::number(rows) + " by " + QString::number(columns);
-    }
-    else if(dataSize = rows * columns){
-        report = "The file has the right amount of data.";
-    }
+//    if(dataSize < rows * columns){
+//        report = "The file you provided doesn't have enough data to create an array of the size " + QString::number(rows) + " by " + QString::number(columns);
+//    }
+//    else if(dataSize > rows * columns) {
+//        report = "The file you provided has more data than are needed to create an array of the size "  + QString::number(rows) + " by " + QString::number(columns);
+//    }
+//    else if(dataSize = rows * columns){
+//        report = "The file has the right amount of data.";
+//    }
 
-    return report;
-}
+//    return report;
+//}
 
 
 
