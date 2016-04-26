@@ -21,9 +21,9 @@ public:
 
     Q_INVOKABLE QString getInputData();
 
-    Q_INVOKABLE QString createArray(/*int rows, int columns*/);
+    Q_INVOKABLE QString createArray();
     Q_INVOKABLE void saveArrayToFile(QString filepath/*, const QString &fileType*/);
-//    Q_INVOKABLE QString checkDimensions(int rows, int columns);
+    Q_INVOKABLE QString checkDimensions(int rows, int columns);
 
 
     int rows(){ return m_rows; }
@@ -49,13 +49,8 @@ private:
         int m_rows ;
         int m_columns ;
 
-//        QVector<QVector<int> > shemsi(m, QVector<int>(n,0));
+        QVector<QVector<double> >sortedTable;
 
-//        vector<vector<int> > matrix(M, vector<int>(N, K))
-
-        QVector<QVector<double> >sortedTable;  /*{m_rows, QVector<double>(m_columns,0)};*/    //The initialization with {} brackets is C++11 ONLY! Otherwise it's not possible to initialize the vector here.
-
-//        double sortedTable[m_rows][m_columns];
         double dataCount;
 
 
