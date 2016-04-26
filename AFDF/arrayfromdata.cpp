@@ -44,19 +44,19 @@ void ArrayFromData::getTheFile(QString filePath){
     /* =========================== CAN'T TOUCH THIS >><< END ============ */
 
     QString inputString;
-qDebug()<<"It finally worked: over while ";
+//qDebug()<<"It finally worked: over while ";
 
     while ( !( inputFile.atEnd() ) ){
-    qDebug()<<"It finally worked: inside while head";
+//    qDebug()<<"It finally worked: inside while head";
         inputString = inputFile.readLine();
         unsortedTableValues.push_back(inputString.toDouble());
         dataCount++;
-        qDebug()<<"It finally worked: inside while bottom";
+//        qDebug()<<"It finally worked: inside while bottom";
     }
 
-qDebug()<<"It finally worked: under while";
+//qDebug()<<"It finally worked: under while";
 
-qDebug()<<"Rows: "<<m_rows;
+qDebug()<<"Rows get file: "<<m_rows;
 qDebug()<<"Columns: "<<m_columns;
 
 
@@ -82,6 +82,8 @@ QString ArrayFromData::createArray(/*int m_rows, int m_columns*/){
 
     QTextStream seeout(&outputData);
 
+    outputData = "";
+
     int c =0;
 
     for (int i =0; i<m_columns; i++){qDebug()<<"worked: "<<i<<dataCount;
@@ -95,11 +97,43 @@ QString ArrayFromData::createArray(/*int m_rows, int m_columns*/){
 
     }
 
+    qDebug()<<"Rows create array: "<<m_rows;
+    qDebug()<<"Columns: "<<m_columns;
+
+//    outputData = "";
+
+    size_t s = 0;
+
+    for (int i = 0; i < m_rows; i++){
+        qDebug()<<"It is: "<<sortedTable[i][0];
+    }
 
 
-    outputData = "";
 
-    int s = 0;
+
+    seeout << "{";
+
+//    for (int i = 0; i < sortedTable.size(); i++){
+//        seeout<<"\t{ ";
+
+//        for (int j = 0; j < sortedTable[i].size(); j++){
+//            seeout<<sortedTable[i][j];
+
+//            if( !( j == ( sortedTable[i].size() ) ) )
+//                seeout << ", ";
+
+//            s = j;
+//        }
+
+//        seeout << "}";
+
+//        if( s == ( sortedTable[i].size() ) && i != ( sortedTable.size() ) ){ seeout<<",";  }
+//        else if( s == ( sortedTable[i].size() ) && i == ( sortedTable.size() ) ){ seeout <<"\t};"; }
+
+//        seeout << endl;
+
+//    }
+
 
     seeout<<"{";
 

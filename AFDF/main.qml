@@ -64,7 +64,7 @@ Window {
                 onClicked: {
                     inputData.text = ""
 
-                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
+//                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
 //                    arrayFromData.checkDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     fileDialog.open()
 
@@ -185,6 +185,7 @@ Window {
                 anchors.rightMargin: 10
 
                 onClicked: {
+                    arrayFromData.prepareVector(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     arrayFromData.rows = rowsComboBox.currentIndex;
                     arrayFromData.columns = columnsComboBox.currentIndex;
 //                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex)
