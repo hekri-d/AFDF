@@ -25,47 +25,43 @@ void ArrayFromData::getTheFile(QString filePath){
 
 
     dataCount = 0;
+    inputData = "";
+
 
     QString fileName = QQmlFile::urlToLocalFileOrQrc(filePath);
 
     QFile inputFile(fileName);
 
-                qDebug()<<"Emni i fileNamet eshte:  "<<fileName<<"filePath: "<<filePath;
-
-
     if(!(inputFile.open(QIODevice::ReadOnly))){
-                qDebug()<<"Didn't work: "<<inputFile.errorString();
     }
     else if (!inputFile.error()) {
-                qDebug()<<"It finally worked: "<<inputFile.errorString();
     }
 
 
     /* =========================== CAN'T TOUCH THIS >><< END ============ */
 
     QString inputString;
-//qDebug()<<"It finally worked: over while ";
-
     while ( !( inputFile.atEnd() ) ){
-//    qDebug()<<"It finally worked: inside while head";
         inputString = inputFile.readLine();
+        inputString =  inputString.replace(QString(","), QString("."));
         unsortedTableValues.push_back(inputString.toDouble());
         dataCount++;
-//        qDebug()<<"It finally worked: inside while bottom";
     }
 
-//qDebug()<<"It finally worked: under while";
+
 
 qDebug()<<"Rows get file: "<<m_rows;
 qDebug()<<"Columns: "<<m_columns;
 
 
     for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
-                        iteratori < unsortedTableValues.end();
-                                            iteratori++){
-        inputData +="\n"+ QString::number(*iteratori);
+                                                iteratori < unsortedTableValues.end();
+                                                                                iteratori++){
+        inputData +=QString::number(*iteratori)+"\n";
     }
 
+
+//    fileName.clear();
 
 
 }
@@ -78,11 +74,12 @@ QString ArrayFromData::getInputData(){
 
 
 
-QString ArrayFromData::createArray(/*int m_rows, int m_columns*/){
+QString ArrayFromData::createArray(){
 
     QTextStream seeout(&outputData);
 
     outputData = "";
+    inputData = "";
 
     int c =0;
 
@@ -109,30 +106,6 @@ QString ArrayFromData::createArray(/*int m_rows, int m_columns*/){
     }
 
 
-
-
-    seeout << "{";
-
-//    for (int i = 0; i < sortedTable.size(); i++){
-//        seeout<<"\t{ ";
-
-//        for (int j = 0; j < sortedTable[i].size(); j++){
-//            seeout<<sortedTable[i][j];
-
-//            if( !( j == ( sortedTable[i].size() ) ) )
-//                seeout << ", ";
-
-//            s = j;
-//        }
-
-//        seeout << "}";
-
-//        if( s == ( sortedTable[i].size() ) && i != ( sortedTable.size() ) ){ seeout<<",";  }
-//        else if( s == ( sortedTable[i].size() ) && i == ( sortedTable.size() ) ){ seeout <<"\t};"; }
-
-//        seeout << endl;
-
-//    }
 
 
     seeout<<"{";
@@ -206,22 +179,22 @@ qDebug()<<"Sum ting wong 12";
 
 
 
-//QString ArrayFromData::checkDimensions(int rows, int columns){
+QString ArrayFromData::checkRowsAndColumns(int rows, int columns){
 
-//    QString report = "?";
+    QString report = "?";
 
-//    if(dataSize < rows * columns){
-//        report = "The file you provided doesn't have enough data to create an array of the size " + QString::number(rows) + " by " + QString::number(columns);
-//    }
-//    else if(dataSize > rows * columns) {
-//        report = "The file you provided has more data than are needed to create an array of the size "  + QString::number(rows) + " by " + QString::number(columns);
-//    }
-//    else if(dataSize = rows * columns){
-//        report = "The file has the right amount of data.";
-//    }
+    if(dataCount < rows * columns){
+        report = "The file you provided doesn't have enough data to create an array of the size " + QString::number(rows) + " by " + QString::number(columns);
+    }
+    else if(dataCount > rows * columns) {
+        report = "The file you provided has more data than are needed to create an array of the size "  + QString::number(rows) + " by " + QString::number(columns);
+    }
+    else if(dataCount = rows * columns){
+        report = "The file has the right amount of data.";
+    }
 
-//    return report;
-//}
+    return report;
+}
 
 
 
