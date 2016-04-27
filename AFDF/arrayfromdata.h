@@ -23,7 +23,7 @@ public:
 
     Q_INVOKABLE QString createArray();
     Q_INVOKABLE void saveArrayToFile(QString filepath/*, const QString &fileType*/);
-//    Q_INVOKABLE QString checkDimensions(int rows, int columns);
+    Q_INVOKABLE QString checkRowsAndColumns(int rows, int columns);
 
 
     int rows(){ return m_rows; }

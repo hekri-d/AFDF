@@ -30,6 +30,7 @@ Window {
 
             onAccepted: {
 
+                inputData.text = ""
 
                 arrayFromData.getTheFile(fileDialog.fileUrls)
                 inputData.text = arrayFromData.getInputData();
@@ -65,7 +66,7 @@ Window {
                     inputData.text = ""
 
 //                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
-//                    arrayFromData.checkDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
+                    note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     fileDialog.open()
 
                 }
