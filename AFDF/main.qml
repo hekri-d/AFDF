@@ -18,6 +18,13 @@ Window {
 
 
 
+    signal updateRowsColumns;
+
+    onUpdateRowsColumns: {
+        rowsComboBox.currentIndex = arrayFromData.dataCountt /columnsComboBox.currentIndex
+    }
+
+
         ArrayFromData{
             id: arrayFromData;
         }
@@ -60,12 +67,8 @@ Window {
                 anchors.bottom: inputData.top
                 anchors.bottomMargin: 10
 
-//                enabled:
-
                 onClicked: {
                     inputData.text = ""
-
-//                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     fileDialog.open()
 
@@ -115,7 +118,6 @@ Window {
                 anchors.bottomMargin: 30
                 readOnly: true
                 wrapMode: TextEdit.NoWrap
-        //            horizontalScrollBarPolicy:
             }
 
             Button {
@@ -137,6 +139,9 @@ Window {
                 id: saveFileDialog
                 selectExisting: false
                 selectFolder: false
+                folder: shortcuts.desktop
+                nameFilters: ["Text files (*.txt *.dat)" ]
+
 
                 onAccepted: arrayFromData.saveArrayToFile(saveFileDialog.fileUrls)
 
@@ -172,7 +177,7 @@ Window {
 
                 Text {
                     id: teksti
-                    text: note.text.length
+                    text: "shemsi"
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
@@ -257,6 +262,10 @@ Window {
                 anchors.bottomMargin: 13
             }
 
+
+
+
+
             ComboBox {
                 id: rowsComboBox
                 x: 514
@@ -279,6 +288,7 @@ Window {
                 anchors.left: languageComboBox.left
                 anchors.leftMargin: 0
                 anchors.verticalCenter: arrayLabel.verticalCenter
+                onCurrentIndexChanged:/* teksti.text = parseFloat(arrayFromData.dataCountt)/columnsComboBox.currentIndex  //*/ updateRowsColumns()
 
                 model: 1000
             }

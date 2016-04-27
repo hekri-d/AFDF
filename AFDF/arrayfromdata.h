@@ -12,6 +12,10 @@ class ArrayFromData : public QObject
 
     Q_PROPERTY(int rows READ rows WRITE setRows NOTIFY rowsChanged)
     Q_PROPERTY(int columns READ columns WRITE setColumns NOTIFY columnsChanged)
+    Q_PROPERTY(double dataCountt READ dataCountt NOTIFY dataCounttChanged)
+
+
+
 
 
 public:
@@ -27,10 +31,14 @@ public:
 
 
     int rows(){ return m_rows; }
-    int columns(){ return m_columns; }
-
     void setRows(int rows){ m_rows = rows; }
+
+    int columns(){ return m_columns; }
     void setColumns(int columns){ m_columns = columns; }
+
+    double dataCountt(){ return dataCount; }
+//    void setDataCountt(){ }
+
 
     Q_INVOKABLE void prepareVector(int rows, int columns){
         sortedTable.resize(rows);
@@ -51,7 +59,7 @@ private:
 
         QVector<QVector<double> >sortedTable;
 
-        double dataCount;
+        double dataCount = 0;
 
 
 
@@ -62,6 +70,7 @@ signals:
 
         void rowsChanged();
         void columnsChanged();
+        void dataCounttChanged();
 
 public slots:
 };

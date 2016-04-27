@@ -32,61 +32,36 @@ void ArrayFromData::getTheFile(QString filePath){
 
     QFile inputFile(fileName);
 
-
-//                qDebug()<<"Emni i fileNamet eshte:  "<<fileName<<"filePath: "<<filePath;
-
-
     if(!(inputFile.open(QIODevice::ReadOnly))){
-//                qDebug()<<"Didn't work: "<<inputFile.errorString();
     }
     else if (!inputFile.error()) {
-//                qDebug()<<"It finally worked: "<<inputFile.errorString();
     }
 
 
     /* =========================== CAN'T TOUCH THIS >><< END ============ */
-//    QString shemsi;
 
     QString inputString;
-//qDebug()<<"It finally worked: over while ";
-//shemsi = inputFile.readAll();/*shemsi =shemsi.replace(QString("."), QString(","));*/
     while ( !( inputFile.atEnd() ) ){
-//    qDebug()<<"It finally worked: inside while head";
-        inputString = inputFile.readLine(); /*inputString =  inputString.replace(QString(","), QString("."));*/
-
+        inputString = inputFile.readLine();
+        inputString =  inputString.replace(QString(","), QString("."));
         unsortedTableValues.push_back(inputString.toDouble());
-
         dataCount++;
-//        qDebug()<<"It finally worked: inside while bottom";
     }
 
-//qDebug()<<"It finally worked: under while";
+
 
 qDebug()<<"Rows get file: "<<m_rows;
 qDebug()<<"Columns: "<<m_columns;
 
-//    qDebug()<<inputString<<endl;
-
-
-
-
-//inputString.replace(QString("."), QString(","));
-
-//qDebug()<<inputString<<endl;
-
 
     for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
-                        iteratori < unsortedTableValues.end();
-                                            iteratori++){
-        inputData +="\n"+ QString::number(*iteratori);
+                                                iteratori < unsortedTableValues.end();
+                                                                                iteratori++){
+        inputData +=QString::number(*iteratori)+"\n";
     }
 
 
-//qDebug()<<shemsi;/*<<;*//*endl;*/
-
-//inputData = shemsi;
-
-    fileName.clear();
+//    fileName.clear();
 
 
 }
@@ -99,7 +74,7 @@ QString ArrayFromData::getInputData(){
 
 
 
-QString ArrayFromData::createArray(/*int m_rows, int m_columns*/){
+QString ArrayFromData::createArray(){
 
     QTextStream seeout(&outputData);
 
