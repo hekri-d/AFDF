@@ -30,7 +30,7 @@ Window {
 
             onAccepted: {
 
-                inputData.text = ""
+//                inputData.text = ""
 
                 arrayFromData.getTheFile(fileDialog.fileUrls)
                 inputData.text = arrayFromData.getInputData();
