@@ -114,7 +114,7 @@ QString ArrayFromData::createArray(){
         seeout<<"\t{ ";
 
         for (int j=0; j<m_columns; j++){
-            seeout<<sortedTable[i][j];
+            seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(8,' ');
 
             if(!(j == (m_columns-1) ))
                 seeout <<", ";
@@ -157,7 +157,7 @@ void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*
             seeout<<"\t{ ";
 
             for (int j=0; j<m_columns; j++){
-                seeout<<sortedTable[i][j];
+                seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(7,' ');
 
                 if(!(j == (m_columns-1) ))
                     seeout <<", ";
