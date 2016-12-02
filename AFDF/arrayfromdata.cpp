@@ -12,7 +12,10 @@
 #include <QtGui/QFontDatabase>
 #include <QtCore/QFileInfo>
 
+#include <iostream>
 #include "qqmlfile.h"
+
+using namespace std;
 
 ArrayFromData::ArrayFromData(QObject *parent) : QObject(parent)
 {
@@ -53,11 +56,13 @@ void ArrayFromData::getTheFile(QString filePath){
 qDebug()<<"Rows get file: "<<m_rows;
 qDebug()<<"Columns: "<<m_columns;
 
-
+int test = 0;
     for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
                                                 iteratori < unsortedTableValues.end();
                                                                                 iteratori++){
         inputData +=QString::number(*iteratori)+"\n";
+        test++;
+        qDebug()<<"Test eshte: "<<test<<endl;
     }
 
 
@@ -149,27 +154,27 @@ QString ArrayFromData::createTable(){
 
     int c =0;
 
-    for (int i = 0; i < m_columns; i++){qDebug()<<"worked: "<<i<<dataCount;
-        for (int j = 0; j < m_rows; j++){
+    for (int i = 0; i < m_rows; i++){/*qDebug()<<"worked: "<<i<<dataCount;*/
+        for (int j = 0; j < m_columns; j++){
 
-            sortedTable[j][i] = unsortedTableValues[c];
+            sortedTable[i][j] = unsortedTableValues[c];
             c++;
-            if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
+//            if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
         }
-        if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
+//        if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
 
     }
 
-    qDebug()<<"Rows create array: "<<m_rows;
-    qDebug()<<"Columns: "<<m_columns;
+//    qDebug()<<"Rows create array: "<<m_rows;
+//    qDebug()<<"Columns: "<<m_columns;
 
 //    outputData = "";
 
     size_t s = 0;
 
-    for (int i = 0; i < m_rows; i++){
-        qDebug()<<"It is: "<<sortedTable[i][0];
-    }
+//    for (int i = 0; i < m_rows; i++){
+//        qDebug()<<"It is: "<<sortedTable[i][0];
+//    }
 
 
 
@@ -187,7 +192,7 @@ QString ArrayFromData::createTable(){
 
 
         if(s==(m_columns-1) && i !=(m_rows-1)){seeout<<",";  }
-        else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t;"; }
+        else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t"; }
 
         seeout << endl;
 

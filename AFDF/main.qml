@@ -6,6 +6,7 @@ import QtQuick 2.4
 import QtQuick.Controls 1.5
 import QtQuick.Layouts 1.3
 import QtQuick.Extras 1.4
+import QtQuick.Controls.Styles 1.4
 
 import ArrayFromData 1.0
 
@@ -14,7 +15,86 @@ Window {
     visible: true
     width: Screen.width/1.5
     height: Screen.height/1.8
-//    implicitWidth:
+
+    /* FIX IT. Name it properly and add the full functionality */
+    Dialog {
+        id: optionsDialog
+        width: 500
+        height: 500
+
+        Rectangle {
+            Text {
+                id: name
+                text: qsTr("text")
+                width: parent.width/2
+                height: parent.height/10
+                anchors.left: parent.left
+               }
+
+
+            CheckBox {
+                id: checku
+                anchors.left: name.right
+                anchors.leftMargin: 200
+                anchors.top: name.bottom
+                anchors.topMargin: 200
+                width: 200;
+                height: 100
+                checked: true
+
+            }
+        }
+
+//        onAccepted: boolProp = checku
+    }
+
+
+    property bool boolProp: checku
+    ToolBar {
+
+        ToolButton {
+            id: options
+            text: "Options"
+            width: 80;
+            height: parent.height
+
+            style: ButtonStyle {
+                background: Rectangle {
+                    color: "blue"
+                    border.width: 2
+                    radius: 2
+                    border.color: "black"
+                }
+            }
+
+            onClicked: {
+
+                optionsDialog.open();
+            }
+
+        }
+
+        ToolButton {
+            anchors.left: options.right
+            text: "Options"
+            width: 80;
+            height: parent.height
+            style: ButtonStyle {
+                background: Rectangle {
+                    color: "blue"
+                    border.width: 2
+                    radius: 2
+                    border.color: "black"
+                }
+            }
+
+
+            onClicked: {
+            if ( boolProp == true ){
+            console.log("Fuck clilecked")
+            } }
+        }
+    }
 
 
 
@@ -33,7 +113,7 @@ Window {
         FileDialog {
             id: fileDialog
             title: "Please choose a file"
-            folder: shortcuts.home
+            folder: shortcuts.desktop
 
             onAccepted: {
 
@@ -69,8 +149,8 @@ Window {
 
                 onClicked: {
                     inputData.text = ""
-                    note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     fileDialog.open()
+//                    note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
 
                 }
             }
@@ -195,8 +275,8 @@ Window {
                     arrayFromData.prepareVector(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
                     arrayFromData.rows = rowsComboBox.currentIndex;
                     arrayFromData.columns = columnsComboBox.currentIndex;
-//                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex)
-//                    note.text = arrayFromData.checkDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex);
+
+                    note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex,columnsComboBox.currentIndex);
 
                     if ( replaceCommasWithDots.checked ){
                         output.text = arrayFromData.createTable();
