@@ -11,35 +11,41 @@ import QtQuick.Controls.Styles 1.4
 import ArrayFromData 1.0
 
 
-Window {
+ApplicationWindow {
+    id: appWindow
+    color: "white"
     visible: true
     width: Screen.width/1.5
     height: Screen.height/1.8
 
-    /* FIX IT. Name it properly and add the full functionality */
+
+    /* OPTIONS DIALOG --- FIX IT. Name it properly and add the full functionality */
+
     Dialog {
         id: optionsDialog
-        width: 500
-        height: 500
+        width: 300
+        height: 400
 
         Rectangle {
+            anchors.fill: parent
             Text {
                 id: name
-                text: qsTr("text")
-                width: parent.width/2
-                height: parent.height/10
+                text: qsTr("Table instead of array")
                 anchors.left: parent.left
+                font.pixelSize: 16
+                anchors.top: parent.top
+                anchors.topMargin: 20
                }
 
 
             CheckBox {
                 id: checku
-                anchors.left: name.right
-                anchors.leftMargin: 200
-                anchors.top: name.bottom
-                anchors.topMargin: 200
-                width: 200;
-                height: 100
+                anchors.right: parent.right
+                anchors.rightMargin: 20
+                anchors.top: parent.top
+                anchors.topMargin: 20
+                width: 30;
+                height: 20
                 checked: true
 
             }
@@ -49,27 +55,78 @@ Window {
     }
 
 
+    ColorDialog {
+        id: collori
+
+        onAccepted: appWindow.color = collori.color
+        onRejected: console.log("You rejected")
+    }
+
+
+
     property bool boolProp: checku
+
+   menuBar: MenuBar {
+        id: menu
+
+//        style: MenuBarStyle {
+//            background: Rectangle {
+//                color: "lightblue"
+//                border.color: "blue"
+//                border.width: 2
+//                radius: 2
+//            }
+
+//        }
+
+        Menu {
+            title: "File"
+            MenuItem {text: "Open"; onTriggered: fileDialog.open()  }
+            MenuItem {text: "Exit"; onTriggered: Qt.quit() }
+        }
+
+        Menu {
+            title: "Options"
+            MenuItem {text: "Options"; onTriggered: optionsDialog.open() }
+        }
+
+        Menu {
+            title: "Preferences"
+            MenuItem {text: "Colors"; onTriggered: collori.open() }
+
+            MenuItem {text: "Hide/Show Toolbar";
+                onTriggered: if( tullbari.visible == true )
+                                {tullbari.visible = false; }
+                             else if(tullbari.visible == false)
+                                {tullbari.visible = true; }
+            }
+
+        }
+    }
+
     ToolBar {
+        id: tullbari
+        visible: true
+        height: 50
+        style: ToolBarStyle {
+            background: Rectangle {
+                anchors.fill: parent
+                color: appWindow.color
+            }
+        }
 
         ToolButton {
             id: options
             text: "Options"
-            width: 80;
+            width: 60;
             height: parent.height
 
-            style: ButtonStyle {
-                background: Rectangle {
-                    color: "blue"
-                    border.width: 2
-                    radius: 2
-                    border.color: "black"
-                }
-            }
+            iconSource: { "/Gnome-Folder-Open.ico"}
+            iconName: "Pref"
 
             onClicked: {
 
-                optionsDialog.open();
+                fileDialog.open()
             }
 
         }
@@ -79,20 +136,14 @@ Window {
             text: "Options"
             width: 80;
             height: parent.height
-            style: ButtonStyle {
-                background: Rectangle {
-                    color: "blue"
-                    border.width: 2
-                    radius: 2
-                    border.color: "black"
-                }
-            }
+
+            iconSource: { "/Gnome-Preferences-Desktop.ico"}
 
 
             onClicked: {
-            if ( boolProp == true ){
-            console.log("Fuck clilecked")
-            } }
+
+                optionsDialog.open();
+             }
         }
     }
 
@@ -181,6 +232,10 @@ Window {
                 anchors.topMargin: 0
                 anchors.right: output.left
                 anchors.rightMargin: 10
+
+                style: TextAreaStyle {
+                    backgroundColor: appWindow.color
+                }
             }
 
 
@@ -198,6 +253,10 @@ Window {
                 anchors.bottomMargin: 30
                 readOnly: true
                 wrapMode: TextEdit.NoWrap
+
+                style: TextAreaStyle {
+                    backgroundColor: appWindow.color
+                }
             }
 
             Button {
@@ -256,11 +315,11 @@ Window {
 
             }
 
-                Text {
-                    id: teksti
-                    text: "shemsi"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
+//                Text {
+//                    id: teksti
+//                    text: "shemsi"
+//                    anchors.horizontalCenter: parent.horizontalCenter
+//                }
 
             Button {
                 id: generate

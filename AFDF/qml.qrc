@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Options.qml</file>
+        <file>Gnome-Preferences-Desktop.ico</file>
+        <file>Gnome-Folder-Open.ico</file>
     </qresource>
 </RCC>
