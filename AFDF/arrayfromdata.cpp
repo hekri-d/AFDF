@@ -23,7 +23,6 @@ void ArrayFromData::getTheFile(QString filePath){
 
     /* =========================== CAN'T TOUCH THIS ============ */
 
-
     dataCount = 0;
     inputData = "";
 
@@ -39,6 +38,7 @@ void ArrayFromData::getTheFile(QString filePath){
 
 
     /* =========================== CAN'T TOUCH THIS >><< END ============ */
+
 
     QString inputString;
     while ( !( inputFile.atEnd() ) ){
@@ -73,6 +73,7 @@ QString ArrayFromData::getInputData(){
 }
 
 
+/*================= CREATE ARRAY - START ============================*/
 
 QString ArrayFromData::createArray(){
 
@@ -83,8 +84,8 @@ QString ArrayFromData::createArray(){
 
     int c =0;
 
-    for (int i =0; i<m_columns; i++){qDebug()<<"worked: "<<i<<dataCount;
-        for (int j=0; j<m_rows; j++){
+    for (int i = 0; i < m_columns; i++){qDebug()<<"worked: "<<i<<dataCount;
+        for (int j = 0; j < m_rows; j++){
 
             sortedTable[j][i] = unsortedTableValues[c];
             c++;
@@ -135,6 +136,68 @@ QString ArrayFromData::createArray(){
 
 }
 
+/*================= CREATE ARRAY - END ============================*/
+
+
+
+QString ArrayFromData::createTable(){
+
+    QTextStream seeout(&outputData);
+
+    outputData = "";
+    inputData = "";
+
+    int c =0;
+
+    for (int i = 0; i < m_columns; i++){qDebug()<<"worked: "<<i<<dataCount;
+        for (int j = 0; j < m_rows; j++){
+
+            sortedTable[j][i] = unsortedTableValues[c];
+            c++;
+            if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
+        }
+        if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
+
+    }
+
+    qDebug()<<"Rows create array: "<<m_rows;
+    qDebug()<<"Columns: "<<m_columns;
+
+//    outputData = "";
+
+    size_t s = 0;
+
+    for (int i = 0; i < m_rows; i++){
+        qDebug()<<"It is: "<<sortedTable[i][0];
+    }
+
+
+
+    for (int i =0; i<m_rows; i++){
+        seeout<<"\t ";
+
+        for (int j=0; j<m_columns; j++){
+            seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(8,' ');
+
+            if(!(j == (m_columns-1) ))
+                seeout <<", ";
+
+            s = j;
+        }
+
+
+        if(s==(m_columns-1) && i !=(m_rows-1)){seeout<<",";  }
+        else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t;"; }
+
+        seeout << endl;
+
+    }
+
+    return outputData;
+
+}
+
+
 
 
 void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*/){
@@ -153,10 +216,10 @@ void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*
 
         seeout<<"{";
 
-        for (int i =0; i<m_rows; i++){
+        for (int i = 0; i < m_rows; i++){
             seeout<<"\t{ ";
 
-            for (int j=0; j<m_columns; j++){
+            for (int j = 0; j < m_columns; j++){
                 seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(7,' ');
 
                 if(!(j == (m_columns-1) ))
@@ -167,7 +230,7 @@ void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*
 
             seeout <<"}";
 
-            if(s==(m_columns-1) && i !=(m_rows-1)){seeout<<",";  }
+            if(s==(m_columns-1) && i != (m_rows-1)){seeout<<",";  }
             else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t};"; }
 
             seeout << endl;
@@ -176,6 +239,47 @@ void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*
 qDebug()<<"Sum ting wong 12";
 
 }
+
+void ArrayFromData::saveTableToFile(QString filepath/*, const QString &fileType*/){
+
+    QString localPath = QQmlFile::urlToLocalFileOrQrc(filepath);
+    QFile saveArrayFile(localPath);
+    if (!saveArrayFile.open(QFile::WriteOnly | QFile::Truncate)) {
+        qDebug()<<"Sum ting wong";
+        qDebug()<<saveArrayFile.errorString();
+        return;
+    }
+
+        QTextStream seeout(&saveArrayFile);
+
+        int s = 0;
+
+//        seeout<<"{";
+
+        for (int i = 0; i < m_rows; i++){
+            seeout<<"\t ";
+
+            for (int j = 0; j < m_columns; j++){
+                seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(7,' ');
+
+                if(!(j == (m_columns-1) ))
+//                    seeout <<", ";
+
+                s = j;
+            }
+
+//            seeout <<"}";
+
+            if(s==(m_columns-1) && i != (m_rows-1)){seeout<<",";  }
+            else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t;"; }
+
+            seeout << endl;
+
+        }
+qDebug()<<"Sum ting wong 12";
+
+}
+
 
 
 

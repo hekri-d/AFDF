@@ -6,6 +6,8 @@
 #include <QString>
 #include <QVector>
 #include <QDebug>
+
+
 class ArrayFromData : public QObject
 {
     Q_OBJECT
@@ -13,9 +15,6 @@ class ArrayFromData : public QObject
     Q_PROPERTY(int rows READ rows WRITE setRows NOTIFY rowsChanged)
     Q_PROPERTY(int columns READ columns WRITE setColumns NOTIFY columnsChanged)
     Q_PROPERTY(double dataCountt READ dataCountt NOTIFY dataCounttChanged)
-
-
-
 
 
 public:
@@ -28,6 +27,9 @@ public:
     Q_INVOKABLE QString createArray();
     Q_INVOKABLE void saveArrayToFile(QString filepath/*, const QString &fileType*/);
     Q_INVOKABLE QString checkRowsAndColumns(int rows, int columns);
+
+    Q_INVOKABLE QString createTable();
+    Q_INVOKABLE void saveTableToFile(QString filepath/*, const QString &fileType*/);
 
 
     int rows(){ return m_rows; }

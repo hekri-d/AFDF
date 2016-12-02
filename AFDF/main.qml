@@ -143,7 +143,8 @@ Window {
                 nameFilters: ["Text files (*.txt *.dat)" ]
 
 
-                onAccepted: arrayFromData.saveArrayToFile(saveFileDialog.fileUrls)
+                onAccepted: { if( replaceCommasWithDots.checked){ arrayFromData.saveTableToFile(saveFileDialog.fileUrls) }
+                              else { arrayFromData.saveArrayToFile(saveFileDialog.fileUrls) } }
 
             }
 
@@ -196,7 +197,11 @@ Window {
                     arrayFromData.columns = columnsComboBox.currentIndex;
 //                    arrayFromData.getArrayDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex)
 //                    note.text = arrayFromData.checkDimensions(rowsComboBox.currentIndex,columnsComboBox.currentIndex);
-                    output.text = arrayFromData.createArray()
+
+                    if ( replaceCommasWithDots.checked ){
+                        output.text = arrayFromData.createTable();
+                    }
+                    else { output.text = arrayFromData.createArray(); }
                 }
             }
 
