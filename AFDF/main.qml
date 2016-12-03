@@ -69,6 +69,8 @@ ApplicationWindow {
    menuBar: MenuBar {
         id: menu
 
+
+
 //        style: MenuBarStyle {
 //            background: Rectangle {
 //                color: "lightblue"
@@ -81,6 +83,7 @@ ApplicationWindow {
 
         Menu {
             title: "File"
+
             MenuItem {text: "Open"; onTriggered: fileDialog.open()  }
             MenuItem {text: "Exit"; onTriggered: Qt.quit() }
         }
@@ -107,7 +110,7 @@ ApplicationWindow {
     ToolBar {
         id: tullbari
         visible: true
-        height: 50
+        height: 32
         style: ToolBarStyle {
             background: Rectangle {
                 anchors.fill: parent
@@ -115,14 +118,16 @@ ApplicationWindow {
             }
         }
 
+        RowLayout {
+            spacing: 10
+
+
         ToolButton {
             id: options
-            text: "Options"
             width: 60;
             height: parent.height
 
-            iconSource: { "/Gnome-Folder-Open.ico"}
-            iconName: "Pref"
+            iconSource: { "/folder.png"}
 
             onClicked: {
 
@@ -132,12 +137,23 @@ ApplicationWindow {
         }
 
         ToolButton {
-            anchors.left: options.right
-            text: "Options"
             width: 80;
             height: parent.height
 
-            iconSource: { "/Gnome-Preferences-Desktop.ico"}
+            iconSource: { "save.ico"}
+
+
+            onClicked: {
+
+                saveFileDialog.open()
+             }
+        }
+
+        ToolButton {
+            width: 80;
+            height: parent.height
+
+            iconSource: { "options.ico"}
 
 
             onClicked: {
@@ -148,6 +164,9 @@ ApplicationWindow {
     }
 
 
+
+
+}
 
     signal updateRowsColumns;
 
@@ -373,6 +392,12 @@ ApplicationWindow {
                 anchors.left: load.right
                 anchors.leftMargin: 205
                 anchors.verticalCenter: load.verticalCenter
+
+                onClicked: {
+
+                    inputData.text = "";
+                    arrayFromData.reloadTheFile();
+                }
             }
 
             ComboBox {

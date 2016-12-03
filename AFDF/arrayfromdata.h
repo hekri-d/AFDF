@@ -22,6 +22,8 @@ public:
 
     Q_INVOKABLE void getTheFile(QString filePath);
 
+    Q_INVOKABLE void reloadTheFile();
+
     Q_INVOKABLE QString getInputData();
 
     Q_INVOKABLE QString createArray();
