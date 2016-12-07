@@ -22,7 +22,6 @@ ArrayFromData::ArrayFromData(QObject *parent) : QObject(parent)
 
 }
 
-QString test = "";
 
 void ArrayFromData::getTheFile(QString filePath){
 
@@ -31,16 +30,16 @@ void ArrayFromData::getTheFile(QString filePath){
     dataCount = 0;
     inputData = "";
     outputData = "";
+    inputData = "";
+
+    unsortedTableValues.clear();
 
 
     QString fileName = QQmlFile::urlToLocalFileOrQrc(filePath);
 
-    test = fileName;
+    lastOpenedFile = fileName;
 
     QFile inputFile(fileName);
-
-    inputData.clear();
-
 
 
     if(!(inputFile.open(QIODevice::ReadOnly))){
@@ -56,7 +55,7 @@ void ArrayFromData::getTheFile(QString filePath){
     QString inputString;
     while ( !( inputFile.atEnd() ) ){
         inputString = inputFile.readLine();
-        inputString =  inputString.replace(QString(","), QString("."));
+        inputString = inputString.replace(QString(","), QString("."));
         unsortedTableValues.push_back(inputString.toDouble());
         dataCount++;
     }
@@ -68,11 +67,12 @@ void ArrayFromData::getTheFile(QString filePath){
                                                                                        iteratori++){
         inputData +=QString::number(*iteratori)+"\n";
 
-    }
+    }    for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
+              iteratori < unsortedTableValues.end();
+                                                iteratori++){
 
 
-//    fileName.clear();
-
+}
 
     inputFile.close();
 }
@@ -88,18 +88,13 @@ void ArrayFromData::reloadTheFile(){
     inputData = "";
     outputData = "";
 
+    unsortedTableValues.clear();
 
-//    QString fileName = test;
-
-//    inputFile.close();
-
-    QFile inputFile(test);
+    QFile inputFile(lastOpenedFile);
 
 
-
-    inputData.clear();
-
-    if(!(inputFile.open(QIODevice::ReadOnly))){
+    if((inputFile.open(QIODevice::ReadOnly))){
+        qDebug()<<"OPened"<<endl;
     }
     else if (inputFile.error()) {
         qDebug()<<inputFile.errorString()<<endl;
@@ -112,7 +107,7 @@ void ArrayFromData::reloadTheFile(){
     QString inputString;
     while ( !( inputFile.atEnd() ) ){
         inputString = inputFile.readLine();
-        inputString =  inputString.replace(QString(","), QString("."));
+        inputString = inputString.replace(QString(","), QString("."));
         unsortedTableValues.push_back(inputString.toDouble());
         dataCount++;
     }
@@ -124,22 +119,18 @@ void ArrayFromData::reloadTheFile(){
                                                                                        iteratori++){
         inputData +=QString::number(*iteratori)+"\n";
 
+        qDebug()<<"this: "<<*(iteratori)<<"\n";
     }
 
 
-//    fileName.clear();
 
-    qDebug()<<"Variable test is: "<<test<<endl;
+    inputFile.close();
 
 }
 
 
 /* ========================================================================================================================*/
 
-
-QString ArrayFromData::getInputData(){
-    return inputData;
-}
 
 
 /*================= CREATE ARRAY - START ============================*/
@@ -213,29 +204,18 @@ QString ArrayFromData::createTable(){
 
     int c =0;
 
-    for (int i = 0; i < m_rows; i++){/*qDebug()<<"worked: "<<i<<dataCount;*/
+    for (int i = 0; i < m_rows; i++){
         for (int j = 0; j < m_columns; j++){
 
             sortedTable[i][j] = unsortedTableValues[c];
             c++;
-//            if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
+
         }
-//        if( c >= dataCount){qDebug()<<"Bitch it reached it: "; break;}
+
 
     }
 
-//    qDebug()<<"Rows create array: "<<m_rows;
-//    qDebug()<<"Columns: "<<m_columns;
-
-//    outputData = "";
-
     size_t s = 0;
-
-//    for (int i = 0; i < m_rows; i++){
-//        qDebug()<<"It is: "<<sortedTable[i][0];
-//    }
-
-
 
     for (int i =0; i<m_rows; i++){
         seeout<<"\t ";
@@ -264,7 +244,7 @@ QString ArrayFromData::createTable(){
 
 
 
-void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*/){
+void ArrayFromData::saveArrayToFile(QString filepath){
 
     QString localPath = QQmlFile::urlToLocalFileOrQrc(filepath);
     QFile saveArrayFile(localPath);
@@ -300,47 +280,38 @@ void ArrayFromData::saveArrayToFile(QString filepath/*, const QString &fileType*
             seeout << endl;
 
         }
-qDebug()<<"Sum ting wong 12";
 
 }
 
-void ArrayFromData::saveTableToFile(QString filepath/*, const QString &fileType*/){
+
+
+
+void ArrayFromData::saveTableToFile(QString filepath){
 
     QString localPath = QQmlFile::urlToLocalFileOrQrc(filepath);
-    QFile saveArrayFile(localPath);
-    if (!saveArrayFile.open(QFile::WriteOnly | QFile::Truncate)) {
+    QFile saveTableFile(localPath);
+
+    if (!saveTableFile.open(QFile::WriteOnly | QFile::Truncate)) {
         qDebug()<<"Sum ting wong";
-        qDebug()<<saveArrayFile.errorString();
+        qDebug()<<saveTableFile.errorString();
         return;
     }
 
-        QTextStream seeout(&saveArrayFile);
-
-        int s = 0;
-
-//        seeout<<"{";
+        QTextStream seeout(&saveTableFile);
 
         for (int i = 0; i < m_rows; i++){
-            seeout<<"\t ";
 
             for (int j = 0; j < m_columns; j++){
                 seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(7,' ');
 
                 if(!(j == (m_columns-1) ))
-//                    seeout <<", ";
+                    seeout <<", ";
 
-                s = j;
             }
-
-//            seeout <<"}";
-
-            if(s==(m_columns-1) && i != (m_rows-1)){seeout<<",";  }
-            else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t;"; }
 
             seeout << endl;
 
         }
-qDebug()<<"Sum ting wong 12";
 
 }
 
@@ -351,13 +322,13 @@ QString ArrayFromData::checkRowsAndColumns(int rows, int columns){
 
     QString report = "?";
 
-    if(dataCount < rows * columns){
+    if(dataCount < (rows * columns) ){
         report = "The file you provided doesn't have enough data to create an array of the size " + QString::number(rows) + " by " + QString::number(columns);
     }
-    else if(dataCount > rows * columns) {
+    else if(dataCount > (rows * columns) ){
         report = "The file you provided has more data than are needed to create an array of the size "  + QString::number(rows) + " by " + QString::number(columns);
     }
-    else if(dataCount = rows * columns){
+    else if(dataCount == (rows * columns) ){
         report = "The file has the right amount of data.";
     }
 

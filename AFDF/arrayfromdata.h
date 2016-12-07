@@ -21,23 +21,23 @@ public:
     explicit ArrayFromData(QObject *parent = 0);
 
     Q_INVOKABLE void getTheFile(QString filePath);
-
     Q_INVOKABLE void reloadTheFile();
 
-    Q_INVOKABLE QString getInputData();
+    Q_INVOKABLE QString getInputData(){ return inputData; }
 
     Q_INVOKABLE QString createArray();
-    Q_INVOKABLE void saveArrayToFile(QString filepath/*, const QString &fileType*/);
+    Q_INVOKABLE void saveArrayToFile(QString filepath);
+
     Q_INVOKABLE QString checkRowsAndColumns(int rows, int columns);
 
     Q_INVOKABLE QString createTable();
-    Q_INVOKABLE void saveTableToFile(QString filepath/*, const QString &fileType*/);
+    Q_INVOKABLE void saveTableToFile(QString filepath);
 
 
-    int rows(){ return m_rows; }
+    Q_INVOKABLE int rows(){ return m_rows; }
     void setRows(int rows){ m_rows = rows; }
 
-    int columns(){ return m_columns; }
+    Q_INVOKABLE int columns(){ return m_columns; }
     void setColumns(int columns){ m_columns = columns; }
 
     double dataCountt(){ return dataCount; }
@@ -52,20 +52,20 @@ public:
     }
 
 
+
 private:
         QString inputData = "";
         QString outputData = "";
+        double dataCount = 0;
+
+        QString lastOpenedFile = "";
 
         QVector<double> unsortedTableValues;
 
-        int m_rows ;
-        int m_columns ;
-
         QVector<QVector<double> >sortedTable;
 
-        double dataCount = 0;
-
-
+        int m_rows ;
+        int m_columns;
 
 
 

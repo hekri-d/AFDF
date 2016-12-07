@@ -19,7 +19,6 @@ ApplicationWindow {
     height: Screen.height/1.8
 
 
-    /* OPTIONS DIALOG --- FIX IT. Name it properly and add the full functionality */
 
     Dialog {
         id: optionsDialog
@@ -29,7 +28,7 @@ ApplicationWindow {
         Rectangle {
             anchors.fill: parent
             Text {
-                id: name
+                id: tableInsteadOfArrayLabel
                 text: qsTr("Table instead of array")
                 anchors.left: parent.left
                 font.pixelSize: 16
@@ -39,32 +38,33 @@ ApplicationWindow {
 
 
             CheckBox {
-                id: checku
+                id: tableInsteadOfArrayCheckbox
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.top: parent.top
                 anchors.topMargin: 20
                 width: 30;
                 height: 20
-                checked: true
 
             }
         }
 
-//        onAccepted: boolProp = checku
+        onAccepted: {
+
+      }
+
     }
 
 
     ColorDialog {
-        id: collori
+        id: uiColor
 
-        onAccepted: appWindow.color = collori.color
+        onAccepted: appWindow.color = uiColor.color
         onRejected: console.log("You rejected")
     }
 
 
 
-    property bool boolProp: checku
 
    menuBar: MenuBar {
         id: menu
@@ -95,20 +95,20 @@ ApplicationWindow {
 
         Menu {
             title: "Preferences"
-            MenuItem {text: "Colors"; onTriggered: collori.open() }
+            MenuItem {text: "Colors"; onTriggered: uiColor.open() }
 
             MenuItem {text: "Hide/Show Toolbar";
-                onTriggered: if( tullbari.visible == true )
-                                {tullbari.visible = false; }
-                             else if(tullbari.visible == false)
-                                {tullbari.visible = true; }
+                onTriggered: if( toolbar.visible == true )
+                                {toolbar.visible = false; }
+                             else if(toolbar.visible == false)
+                                {toolbar.visible = true; }
             }
 
         }
     }
 
     ToolBar {
-        id: tullbari
+        id: toolbar
         visible: true
         height: 32
         style: ToolBarStyle {
@@ -172,6 +172,23 @@ ApplicationWindow {
 
     onUpdateRowsColumns: {
         rowsComboBox.currentIndex = arrayFromData.dataCountt /columnsComboBox.currentIndex
+        if (rowsComboBox.currentIndex < 1 ){
+            rowsComboBox.currentIndex = 1
+        }
+
+        if (columnsComboBox.currentIndex < 1 ){
+            columnsComboBox.currentIndex = 1
+        }
+
+//        if (rowsComboBox.currentIndex >  arrayFromData.rows ){
+//            rowsComboBox.currentIndex = arrayFromData.rows
+//        }
+
+//        if (columnsComboBox.currentIndex > arrayFromData.columns ){
+//            columnsComboBox.currentIndex = arrayFromData.columns
+//        }
+
+
     }
 
 
@@ -184,10 +201,9 @@ ApplicationWindow {
             id: fileDialog
             title: "Please choose a file"
             folder: shortcuts.desktop
+            nameFilters: ["Text files (*.txt *.dat)" ]
 
             onAccepted: {
-
-//                inputData.text = ""
 
                 arrayFromData.getTheFile(fileDialog.fileUrls)
                 inputData.text = arrayFromData.getInputData();
@@ -218,7 +234,6 @@ ApplicationWindow {
                 anchors.bottomMargin: 10
 
                 onClicked: {
-                    inputData.text = ""
                     fileDialog.open()
 //                    note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
 
@@ -236,7 +251,7 @@ ApplicationWindow {
                 anchors.left: output.left
                 anchors.leftMargin: 0
 
-                        onClicked: {
+                onClicked: {
                     output.readOnly = 0
                 }
             }
@@ -263,7 +278,7 @@ ApplicationWindow {
                 id: output
                 x: 564
                 y: 335
-                width: (mainItem.width/2)-15
+                width: 390// (mainItem.width/2)-15
                 height: mainItem.height*0.58
                 text: "tfuyjfgyh"
                 anchors.right: parent.right
@@ -280,19 +295,19 @@ ApplicationWindow {
 
             Button {
                 id: quit
-                x: 348
+      /*seeout<<",";*/           x: 348
                 y: 368
                 text: qsTr("Quit")
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.bottom: parent.bottom
-                anchors.bottomMargin: 20
+      /*seeout<<",";*/           anchors.bottomMargin: 20
 
                 onClicked: Qt.quit()
             }
 
 
-        //TODO: Remove this FileDialog and implement the same functionality in the first FileDialog
+
             FileDialog {
                 id: saveFileDialog
                 selectExisting: false
@@ -301,8 +316,17 @@ ApplicationWindow {
                 nameFilters: ["Text files (*.txt *.dat)" ]
 
 
-                onAccepted: { if( replaceCommasWithDots.checked){ arrayFromData.saveTableToFile(saveFileDialog.fileUrls) }
-                              else { arrayFromData.saveArrayToFile(saveFileDialog.fileUrls) } }
+                onAccepted: {
+
+                    if( tableInsteadOfArrayCheckbox.checked ) {
+                        arrayFromData.saveTableToFile(saveFileDialog.fileUrls)
+                    }
+                    else if(! tableInsteadOfArrayCheckbox.checked ) {
+
+                               arrayFromData.saveArrayToFile(saveFileDialog.fileUrls)
+                    }
+                }
+
 
             }
 
@@ -356,10 +380,10 @@ ApplicationWindow {
 
                     note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex,columnsComboBox.currentIndex);
 
-                    if ( replaceCommasWithDots.checked ){
+                    if ( tableInsteadOfArrayCheckbox.checked ){
                         output.text = arrayFromData.createTable();
                     }
-                    else { output.text = arrayFromData.createArray(); }
+                    else if ( tableInsteadOfArrayCheckbox.checked == false){ output.text = arrayFromData.createArray(); }
                 }
             }
 
@@ -395,8 +419,9 @@ ApplicationWindow {
 
                 onClicked: {
 
-                    inputData.text = "";
                     arrayFromData.reloadTheFile();
+                    inputData.text = arrayFromData.getInputData();
+
                 }
             }
 
