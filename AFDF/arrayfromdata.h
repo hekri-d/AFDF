@@ -62,7 +62,11 @@ private:
 
         QVector<double> unsortedTableValues;
 
+        QVector<QString> unsortedTextTableValues;
+
         QVector<QVector<double> >sortedTable;
+
+        QVector<QVector<QString> >sortedTextTable;
 
         int m_rows ;
         int m_columns;

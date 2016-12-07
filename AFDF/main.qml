@@ -205,7 +205,9 @@ ApplicationWindow {
 
             onAccepted: {
 
-                arrayFromData.getTheFile(openFileDialog.fileUrl)
+                arrayFromData.getTheFile(openFileDialog.fileUrl, inputComboBox.currentIndex)
+
+
                 inputData.text = arrayFromData.getInputData();
 
             }
@@ -235,7 +237,6 @@ ApplicationWindow {
 
                 onClicked: {
                     openFileDialog.open()
-//                    note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
 
                 }
             }
@@ -437,6 +438,8 @@ ApplicationWindow {
                 anchors.rightMargin: 128
                 anchors.left: load.left
                 anchors.leftMargin: 101
+
+                model: [ "Numbers", "Text" ]
             }
 
             CheckBox {

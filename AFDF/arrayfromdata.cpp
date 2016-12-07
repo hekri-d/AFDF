@@ -23,7 +23,12 @@ ArrayFromData::ArrayFromData(QObject *parent) : QObject(parent)
 }
 
 
-void ArrayFromData::getTheFile(QString filePath){
+
+/* FIX THE OTHER FUNCTIONS TO FIT 'getTheFile' (DIFFERENTIATE BETWEEN DOUBLES  AND STRINGS ON THE INPUT DATA FILE) */
+
+void ArrayFromData::getTheFile(QString filePath, int inputKind ){
+
+    /* inputKind --> Comes from the inputCombobox. Determines what kind of data is to be loaded (doubles or text)*/
 
     /* =========================== CAN'T TOUCH THIS ============ */
 
@@ -51,28 +56,40 @@ void ArrayFromData::getTheFile(QString filePath){
 
     /* =========================== CAN'T TOUCH THIS >><< END ============ */
 
+    if ( inputKind == 0 ) {
 
-    QString inputString;
-    while ( !( inputFile.atEnd() ) ){
-        inputString = inputFile.readLine();
-        inputString = inputString.replace(QString(","), QString("."));
-        unsortedTableValues.push_back(inputString.toDouble());
-        dataCount++;
+        QString inputString;
+        while ( !( inputFile.atEnd() ) ){
+            inputString = inputFile.readLine();
+            inputString = inputString.replace(QString(","), QString("."));
+            unsortedTableValues.push_back(inputString.toDouble());
+            dataCount++;
+        }
+
+
+
+        for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
+                                                                 iteratori < unsortedTableValues.end();
+                                                                                                    iteratori++){
+            inputData +=QString::number(*iteratori)+"\n";
+
+        }
+
     }
 
+    else if (inputKind == 1){
+        QString inputString;
 
+        while ( !( inputFile.atEnd() ) ){
+            inputString = inputFile.readLine();
+            unsortedTextTableValues.push_back(inputString);
+            dataCount++;
+        }
 
-    for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
-                                                     iteratori < unsortedTableValues.end();
-                                                                                       iteratori++){
-        inputData +=QString::number(*iteratori)+"\n";
-
-    }    for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
-              iteratori < unsortedTableValues.end();
-                                                iteratori++){
-
-
-}
+        for (QVector<QString>::iterator iterator = unsortedTextTableValues.begin(); iterator < unsortedTextTableValues.end(); iterator++ ){
+            inputData += *iterator + "\n";
+        }
+    }
 
     inputFile.close();
 }
@@ -115,8 +132,8 @@ void ArrayFromData::reloadTheFile(){
 
 
     for (QVector<double>::iterator iteratori = unsortedTableValues.begin();
-                                                     iteratori < unsortedTableValues.end();
-                                                                                       iteratori++){
+         iteratori < unsortedTableValues.end();
+         iteratori++){
         inputData +=QString::number(*iteratori)+"\n";
 
         qDebug()<<"this: "<<*(iteratori)<<"\n";
@@ -254,32 +271,32 @@ void ArrayFromData::saveArrayToFile(QString filepath){
         return;
     }
 
-        QTextStream seeout(&saveArrayFile);
+    QTextStream seeout(&saveArrayFile);
 
-        int s = 0;
+    int s = 0;
 
-        seeout<<"{";
+    seeout<<"{";
 
-        for (int i = 0; i < m_rows; i++){
-            seeout<<"\t{ ";
+    for (int i = 0; i < m_rows; i++){
+        seeout<<"\t{ ";
 
-            for (int j = 0; j < m_columns; j++){
-                seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(7,' ');
+        for (int j = 0; j < m_columns; j++){
+            seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(7,' ');
 
-                if(!(j == (m_columns-1) ))
-                    seeout <<", ";
+            if(!(j == (m_columns-1) ))
+                seeout <<", ";
 
-                s = j;
-            }
-
-            seeout <<"}";
-
-            if(s==(m_columns-1) && i != (m_rows-1)){seeout<<",";  }
-            else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t};"; }
-
-            seeout << endl;
-
+            s = j;
         }
+
+        seeout <<"}";
+
+        if(s==(m_columns-1) && i != (m_rows-1)){seeout<<",";  }
+        else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t};"; }
+
+        seeout << endl;
+
+    }
 
 }
 
@@ -297,21 +314,21 @@ void ArrayFromData::saveTableToFile(QString filepath){
         return;
     }
 
-        QTextStream seeout(&saveTableFile);
+    QTextStream seeout(&saveTableFile);
 
-        for (int i = 0; i < m_rows; i++){
+    for (int i = 0; i < m_rows; i++){
 
-            for (int j = 0; j < m_columns; j++){
-                seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(1,' ');
+        for (int j = 0; j < m_columns; j++){
+            seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(1,' ');
 
-                if(!(j == (m_columns-1) ))
-                    seeout <<", ";
-
-            }
-
-            seeout << endl;
+            if(!(j == (m_columns-1) ))
+                seeout <<", ";
 
         }
+
+        seeout << endl;
+
+    }
 
 }
 
