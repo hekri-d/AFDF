@@ -221,7 +221,7 @@ QString ArrayFromData::createTable(){
         seeout<<"\t ";
 
         for (int j=0; j<m_columns; j++){
-            seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(8,' ');
+            seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(1,' ');
 
             if(!(j == (m_columns-1) ))
                 seeout <<", ";
@@ -230,8 +230,8 @@ QString ArrayFromData::createTable(){
         }
 
 
-        if(s==(m_columns-1) && i !=(m_rows-1)){seeout<<",";  }
-        else if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t"; }
+
+        if(s==(m_columns-1) && i ==(m_rows-1)){ seeout <<"\t"; }
 
         seeout << endl;
 
@@ -302,7 +302,7 @@ void ArrayFromData::saveTableToFile(QString filepath){
         for (int i = 0; i < m_rows; i++){
 
             for (int j = 0; j < m_columns; j++){
-                seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(7,' ');
+                seeout<< QString("%1").arg(sortedTable[i][j] ).rightJustified(1,' ');
 
                 if(!(j == (m_columns-1) ))
                     seeout <<", ";

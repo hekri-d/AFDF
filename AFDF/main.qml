@@ -43,8 +43,8 @@ ApplicationWindow {
                 anchors.rightMargin: 20
                 anchors.top: parent.top
                 anchors.topMargin: 20
-                width: 30;
-                height: 20
+                width: 40;
+                height: 40
 
             }
         }
@@ -84,7 +84,7 @@ ApplicationWindow {
         Menu {
             title: "File"
 
-            MenuItem {text: "Open"; onTriggered: fileDialog.open()  }
+            MenuItem {text: "Open"; onTriggered: openFileDialog.open()  }
             MenuItem {text: "Exit"; onTriggered: Qt.quit() }
         }
 
@@ -131,7 +131,7 @@ ApplicationWindow {
 
             onClicked: {
 
-                fileDialog.open()
+                openFileDialog.open()
             }
 
         }
@@ -198,14 +198,14 @@ ApplicationWindow {
 
 
         FileDialog {
-            id: fileDialog
+            id: openFileDialog
             title: "Please choose a file"
             folder: shortcuts.desktop
             nameFilters: ["Text files (*.txt *.dat)" ]
 
             onAccepted: {
 
-                arrayFromData.getTheFile(fileDialog.fileUrls)
+                arrayFromData.getTheFile(openFileDialog.fileUrl)
                 inputData.text = arrayFromData.getInputData();
 
             }
@@ -234,7 +234,7 @@ ApplicationWindow {
                 anchors.bottomMargin: 10
 
                 onClicked: {
-                    fileDialog.open()
+                    openFileDialog.open()
 //                    note.text = arrayFromData.checkRowsAndColumns(rowsComboBox.currentIndex, columnsComboBox.currentIndex)
 
                 }
@@ -295,13 +295,13 @@ ApplicationWindow {
 
             Button {
                 id: quit
-      /*seeout<<",";*/           x: 348
+                x: 348
                 y: 368
                 text: qsTr("Quit")
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.bottom: parent.bottom
-      /*seeout<<",";*/           anchors.bottomMargin: 20
+                anchors.bottomMargin: 20
 
                 onClicked: Qt.quit()
             }
@@ -397,6 +397,8 @@ ApplicationWindow {
                 anchors.left: saveEditsToOutput.right
                 anchors.leftMargin: 7
                 anchors.verticalCenter: inputComboBox.verticalCenter
+
+                model:  {tableInsteadOfArrayCheckbox.checked ? ["Comma separated.","Tab sep.","Space sep."] : ["C++","C","MatLAB","javascript"] }
             }
 
             Button {
@@ -449,7 +451,7 @@ ApplicationWindow {
             Label {
                 id: arrayLabel
                 y: 40
-                text: qsTr("Array dimensions")
+                text: qsTr("Dimensions")
                 anchors.left: edit.left
                 anchors.leftMargin: 0
                 anchors.bottom: edit.top
